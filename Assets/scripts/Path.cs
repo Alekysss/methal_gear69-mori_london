@@ -4,9 +4,8 @@ public class Path : MonoBehaviour
 
 {
 	[SerializeField] Transform[] Points;
-
+	bool movingForward;
 	[SerializeField] private float moveSpeed;
-
 	private int pointsIndex;
 
 	void Start()
@@ -16,20 +15,36 @@ public class Path : MonoBehaviour
 
 	void Update()
 	{
-		if(pointsIndex <= Points.Length -1)
+		if (pointsIndex >= 0 && pointsIndex < Points.Length)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, Points[pointsIndex].transform.position, moveSpeed * Time.deltaTime);
 
-			if(transform.position == Points[pointsIndex].transform.position)
+			if (transform.position == Points[pointsIndex].transform.position)
 			{
-				pointsIndex =+ 1;
-			}
+				if (pointsIndex == 0)
+				{
+					movingForward = true; // Start moving forward when reaching the first point.
+				}
+				else if (pointsIndex == Points.Length - 1)
+				{
+					movingForward = false; // Start moving backward when reaching the last point.
+				}
 
-			if(pointsIndex == Points.Length)
-			{
-				pointsIndex = 0;
-			}
+				if (movingForward)
+				{
+					pointsIndex++;
+				}
+				else
+				{
+					pointsIndex--;
+				}
 
+				Debug.Log(pointsIndex);
+			}
 		}
 	}
 }
+	
+	
+	
+
